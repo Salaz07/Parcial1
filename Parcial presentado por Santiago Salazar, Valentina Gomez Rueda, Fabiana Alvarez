@@ -1,0 +1,255 @@
+import random
+import time
+import statistics
+
+#funcion para generar lista con rango
+def generar_lista_rango(inicio, fin, tamano):
+    if inicio > fin or tamano <= 0:
+        return []
+
+# Función de ordenamiento burbuja
+def ordenamiento_burbuja(arr):
+    n = len(arr)
+    for i in range(n - 1):
+        for j in range(0, n - i - 1):
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+
+#funcion para busqueda lineal
+def busqueda_lineal(lista, elemento):
+    for i, valor in enumerate(lista):
+        if valor == elemento:
+            return i  # Se encontró el elemento en la posición i
+    return -1  # El elemento no se encontró en la lista
+
+#funcion para busqueda binaria
+def busqueda_binaria(lista, elemento):
+    izquierda, derecha = 0, len(lista) - 1
+
+    while izquierda <= derecha:
+        medio = (izquierda + derecha) // 2
+        if lista[medio] == elemento:
+            return medio  # Se encontró el elemento en la posición medio
+        elif lista[medio] < elemento:
+            izquierda = medio + 1
+        else:
+            derecha = medio - 1
+
+    return -1  # El elemento no se encontró en la lista
+
+
+# Clase para la lista de números
+class ListaNumeros:
+    def __init__(self):  #__init__ es un metodo magico
+        self.lista = []
+
+    # Metodos de instancia
+    def ingresar_numeros(self):
+        pass
+
+    # Metodos de instancia
+    def generar_lista_aleatoria(self, cantidad):
+        pass
+
+    # Metodos de instancia
+    def imprimir_primeros_10_elementos(self):
+        if len(self.lista) >= 10:
+            print("Los primeros 10 elementos de la lista son:", self.lista[:10])
+        else:
+            print("La lista tiene menos de 10 elementos:", self.lista)
+
+#Clase hija que hereda de ListaNumeros
+class ListaNumerosManual(ListaNumeros):
+    def ingresar_numeros(self):
+        try:
+            entrada = input("Ingrese los números separados por comas: ")
+            self.lista = [int(x.strip()) for x in entrada.split(",")]
+        except ValueError:
+            print("Error: Ingrese números válidos.")
+
+    @staticmethod
+    def generar_lista_primos(cantidad):
+        # Método estático para generar una lista de 'cantidad' números primos
+        # Implementa la lógica para generar números primos
+        pass
+
+    @classmethod #Metodo de clase
+    def contar_instancias(cls):
+        return cls.num_instancias
+
+    def __str__(self):
+        return str(self.lista)
+
+
+# Clase hija que hereda de ListaNumeros
+class ListaNumerosAleatoria(ListaNumeros):
+    def generar_lista_aleatoria(self, cantidad):
+        self.lista = [random.randint(1, 1000) for _ in range(cantidad)]
+
+
+#Clase hija con herencia múltiple
+class ListaNumerosMixta(ListaNumerosManual, ListaNumerosAleatoria):
+    def crear_lista_desde_rango(self, inicio, fin):
+        self.lista = list(range(inicio, fin + 1))
+
+
+# Clase principal que gestiona el menú
+class MenuPrincipal:
+    @staticmethod
+    def menu():
+        print("\nMENU PRINCIPAL\n",
+        "1. Generar lista aleatoria\n",
+        "2. Ingresar lista manualmente\n",
+        "3. Usar lista previamente cargada\n",
+        "4. Crear lista desde rango\n",
+        "5. Ayuda\n",
+        "6. Salir")
+
+    @staticmethod
+    def sub_menu(lista):
+        while True:
+            print("\nSubmenú:\n",
+            "a. Imprimir lista\n",
+            "b. Ordenar con burbuja\n",
+            "c. Ordenar con rápido\n",
+            "d. Comparar con sorted()\n",
+            "e. Buscar elemento (búsqueda lineal)\n",
+            "f. Buscar elemento (búsqueda binaria)\n",
+            "g. Sumar elementos\n",
+            "h. Calcular promedio\n",
+            "i. Calcular mediana\n",
+            "j. Calcular varianza\n",
+            "k. Encontrar el mínimo\n",
+            "l. Encontrar el máximo\n",
+            "m. Mostrar longitud de la lista\n",
+            "n. Comparar con otra lista\n",
+            "s. Volver al menú principal")
+
+            opcion = input("Seleccione una opción: ")
+            if opcion == "a":
+                lista.imprimir_primeros_10_elementos()
+            elif opcion == "b":
+                ordenamiento_burbuja(lista.lista)
+                print("Lista ordenada con burbuja:", lista.lista)
+            elif opcion == "c":
+
+                def quicksort(arr):
+                    if len(arr) <= 1:
+                        return arr
+                    else:
+                        pivot = arr[0]
+                        left = []
+                        right = []
+                        for x in arr[1:]:
+                            if x < pivot:
+                                left.append(x)
+                            else:
+                                right.append(x)
+                        return quicksort(left) + [pivot] + quicksort(right)
+
+
+                # Llama a quicksort para ordenar la lista
+                lista.lista = quicksort(lista.lista)
+                print("Lista ordenada con rápido (quicksort):", lista.lista)
+
+            elif opcion == "d":
+                lista_copia = lista.lista.copy()
+                lista_copia.sort()
+                print("Lista ordenada con sorted():", lista_copia)
+
+            elif opcion == "e":
+                elemento = int(input("Ingrese el elemento a buscar: "))
+                resultado = busqueda_lineal(lista.lista, elemento)
+                if resultado != -1:
+                    print(f"El elemento {elemento} se encuentra en la posición {resultado}.")
+                else:
+                    print(f"El elemento {elemento} no se encuentra en la lista.")
+            elif opcion == "f":
+                elemento = int(input("Ingrese el elemento a buscar: "))
+                lista.lista.sort()
+                resultado = busqueda_binaria(lista.lista, elemento)
+                if resultado != -1:
+                    print(f"El elemento {elemento} se encuentra en la posición {resultado}.")
+                else:
+                    print(f"El elemento {elemento} no se encuentra en la lista.")
+            elif opcion == "g":
+                suma = sum(lista.lista)
+                print("Suma de elementos:", suma)
+            elif opcion == "h":
+                promedio = statistics.mean(lista.lista)
+                print("Promedio de elementos:", promedio)
+            elif opcion == "i":
+                mediana = statistics.median(lista.lista)
+                print("Mediana de elementos:", mediana)
+            elif opcion == "j":
+                varianza = statistics.variance(lista.lista)
+                print("Varianza de elementos:", varianza)
+            elif opcion == "k":
+                minimo = min(lista.lista)
+                print("Mínimo elemento:", minimo)
+            elif opcion == "l":
+                maximo = max(lista.lista)
+                print("Máximo elemento:", maximo)
+            elif opcion == "m":
+                longitud = len(lista.lista)
+                print("Longitud de la lista:", longitud)
+            elif opcion == "n":
+                lista2 = ListaNumerosManual()
+                lista2.ingresar_numeros()
+                if lista.lista == lista2.lista:
+                    print("Las listas son iguales.")
+                else:
+                    print("Las listas son diferentes.")
+            elif opcion == "s":
+                break
+            else:
+                print("Opción no válida. Por favor, seleccione una opción válida.")
+
+    @staticmethod
+    def main():
+        lista = None
+        while True:
+            MenuPrincipal.menu()
+            opcion = input("Seleccione una opción: ")
+            if opcion == "1":
+                cantidad = int(input("Ingrese el tamaño de la lista: "))
+                lista = ListaNumerosAleatoria()
+                lista.generar_lista_aleatoria(cantidad)
+                lista.imprimir_primeros_10_elementos()
+                MenuPrincipal.sub_menu(lista)
+            elif opcion == "2":
+                lista = ListaNumerosManual()
+                lista.ingresar_numeros()
+                lista.imprimir_primeros_10_elementos()
+                MenuPrincipal.sub_menu(lista)
+            elif opcion == "3":
+                if lista is not None:
+                    lista.imprimir_primeros_10_elementos()
+                    MenuPrincipal.sub_menu(lista)
+                else:
+                    print("Error: No hay una lista previamente cargada.")
+            elif opcion == "4":
+                inicio = int(input("Ingrese el inicio del rango: "))
+                fin = int(input("Ingrese el fin del rango: "))
+                cantidad = int(input("Ingrese el tamaño de la lista: "))
+                lista = ListaNumerosMixta()
+                lista.crear_lista_desde_rango(inicio, fin)
+                lista.imprimir_primeros_10_elementos()
+                MenuPrincipal.sub_menu(lista)
+            elif opcion == "5":
+                print(
+
+                "Ayuda: La busqueda lineal recorre la lista de principio a fin hasta encontrar el elemento\n",
+                "La busqueda binaria requiere que la lista esté ordenada y encuentre el elemento dividiendo la lista en mitades\n",
+                "El ordenamiento por burbuja compara pares de elementos adyacentes y los intercambia si están en orden incorrecto\n",
+                "El ordenamiento rápido utiliza un elemento 'Pivote' para dividir la lista y ordenarla de manera mas eficiente"
+
+                )
+            elif opcion == "6":
+                break
+            else:
+                print("Opción no válida. Por favor, seleccione una opción válida.")
+
+
+if __name__ == '__main__':
+    MenuPrincipal.main()
